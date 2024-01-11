@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HTBox</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@6.65.7/lib/codemirror.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@6.65.7/theme/dracula.css" />
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@6.65.7/lib/codemirror.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@6.65.7/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@6.65.7/mode/xml/xml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@6.65.7/addon/selection/active-line.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@6.65.7/addon/edit/closebrackets.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@6.65.7/addon/edit/matchbrackets.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@6.65.7/addon/edit/closetag.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@6.65.7/addon/hint/show-hint.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@6.65.7/addon/hint/html-hint.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@6.65.7/addon/hint/xml-hint.js"></script>
+
+    <style>
+      * {
+        font-family: 'JetBrains Mono';
+      }
+
+      body {
+        margin: 0;
+        background-color: #282a36;
+        color: #f8f8f2;
+        overflow: hidden;
+      }
+
+      body:first-child {
+        display: none !important;
+      }
+
+      main {
+        display: flex;
+      }
+
+      .CodeMirror,
+      #preview {
+        height: 100vh;
+        width: 50vw;
+      }
+
+      .CodeMirror {
+        float: left;
+        min-width: 25vw;
+        max-width: 75vw;
+      }
+
+      #preview {
+        overflow-y: scroll;
+      }
+
+      #separator {
+        height: 100vh;
+        width: 2px;
+        background-color: #8be9fd;
+        float: left;
+        margin: 0 10px;
+      }
+
+      #hint {
+        position: absolute;
+        top: 0;
+        right: 50%;
+        background-color: #282A36;
+        margin-right: 1px;
+      }
+
+      #hint ul {
+        overflow: hidden;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      #hint .CodeMirror-hint {
+        cursor: pointer;
+        padding: 0 5px;
+      }
+
+      #hint .CodeMirror-hint:hover,
+      #hint .CodeMirror-hint-active {
+        background-color: #44475A;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <textarea id="code" spellcheck="false" autofocus></textarea>
+      <div id="separator"></div>
+      <div id="preview"></div>
+      <div id="hint"></div>
+    </main>
+
+    <script>
+      let editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+        lineNumbers: true,
+        tabSize: 2,
+        mode: 'htmlmixed',
+        theme: 'dracula',
+        styleActiveLine: true,
+        autoCloseBrackets: true, 
+        matchBrackets: true,
+        autoCloseTags: true,
+      });
+
+      editor.addKeyMap({
+        'Ctrl-S': () => {
+          const a = document.createElement('a');
+          const blob = new Blob([editor.getValue()], { type: 'text/html' });
+          const url = URL.createObjectURL(blob);
+          a.setAttribute('href', url);
+          a.setAttribute('download', 'index.html');
+          a.click();
+        },
+        'Ctrl-Space': () => {
+          editor.showHint({
+            hint: CodeMirror.hint.html,
+            container: document.getElementById('hint'),
+          });
+        },
+      });
+
+      if (localStorage.getItem('code')) {
+        editor.getDoc().setValue(localStorage.getItem('code'));
+      }
+
+      const preview = document.getElementById('preview');
+      const editorChange = () => {
+        preview.innerHTML = editor.getValue();
+        localStorage.setItem('code', editor.getValue())
+      };
+
+      editorChange();
+      editor.on('change', editorChange);
+    </script>
+  </body>
+</html>
