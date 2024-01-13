@@ -35,6 +35,9 @@ dependencies:
   '@uiw/codemirror-theme-dracula':
     specifier: ^4.21.21
     version: 4.21.21(@codemirror/language@6.10.0)(@codemirror/state@6.4.0)(@codemirror/view@6.23.0)
+  '@uiw/codemirror-theme-material':
+    specifier: ^4.21.21
+    version: 4.21.21(@codemirror/language@6.10.0)(@codemirror/state@6.4.0)(@codemirror/view@6.23.0)
 
 devDependencies:
   stylus:
@@ -512,6 +515,16 @@ packages:
 
   /@uiw/codemirror-theme-dracula@4.21.21(@codemirror/language@6.10.0)(@codemirror/state@6.4.0)(@codemirror/view@6.23.0):
     resolution: {integrity: sha512-7NAznBZ/DgRuc8FOMmRRI7NAZv4RgARVX86b9MYxU4HcINgGrk+tnJCxOVwJbAyQQ/LjsFLzNLIK23HrjM5AtA==}
+    dependencies:
+      '@uiw/codemirror-themes': 4.21.21(@codemirror/language@6.10.0)(@codemirror/state@6.4.0)(@codemirror/view@6.23.0)
+    transitivePeerDependencies:
+      - '@codemirror/language'
+      - '@codemirror/state'
+      - '@codemirror/view'
+    dev: false
+
+  /@uiw/codemirror-theme-material@4.21.21(@codemirror/language@6.10.0)(@codemirror/state@6.4.0)(@codemirror/view@6.23.0):
+    resolution: {integrity: sha512-Xdd2uI7kdKCD7xbgNhOjL7ksZsw8D+nw66QXAvyLUaBBGOFmObV7yJhCU7DGx9yAHO4eRMz6eRMuSolNnidgsg==}
     dependencies:
       '@uiw/codemirror-themes': 4.21.21(@codemirror/language@6.10.0)(@codemirror/state@6.4.0)(@codemirror/view@6.23.0)
     transitivePeerDependencies:

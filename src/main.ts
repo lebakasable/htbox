@@ -15,9 +15,21 @@ import {
   keymap,
   lineNumbers,
 } from '@codemirror/view';
-import { EditorState, Extension } from '@codemirror/state';
+import { Compartment, EditorState, Extension } from '@codemirror/state';
 import { dracula } from '@uiw/codemirror-theme-dracula';
 import { defaultKeymap, history, indentWithTab } from '@codemirror/commands';
+import { materialLight } from '@uiw/codemirror-theme-material';
+
+let isDark = false;
+if (!localStorage.getItem('darkMode')) { 
+  isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+} else {
+  isDark = localStorage.getItem('darkMode') === 'on';
+}
+
+if (!isDark) {
+  document.body.classList.add('light');
+}
 
 const htmlTemplate = `<!DOCTYPE html>
 <html>
@@ -32,11 +44,13 @@ const htmlTemplate = `<!DOCTYPE html>
 </html>`;
 
 const cssTemplate = `h1 {
-  color: #FF5555;
+  color: red;
 }`;
 
+const themeConfig = new Compartment();
+
 const baseExtensions: Extension[] = [
-  dracula,
+  themeConfig.of([isDark ? dracula : materialLight]),
   lineNumbers(),
   highlightActiveLine(),
   autocompletion(),
@@ -51,7 +65,7 @@ const baseExtensions: Extension[] = [
   ]),
 ];
 
-new EditorView({
+const htmlEditor = new EditorView({
   parent: document.getElementById('html-code')!,
   state: EditorState.create({
     doc: localStorage.getItem('htmlCode') || htmlTemplate,
@@ -79,9 +93,11 @@ new EditorView({
       }),
     ],
   }),
-}).focus();
+});
 
-new EditorView({
+htmlEditor.focus();
+
+const cssEditor = new EditorView({
   parent: document.getElementById('css-code')!,
   state: EditorState.create({
     doc: localStorage.getItem('cssCode') || cssTemplate,
@@ -104,4 +120,15 @@ new EditorView({
       }),
     ],
   }),
+});
+
+const darkMode = document.getElementById('dark-mode')!;
+darkMode.addEventListener('click', () => {
+  isDark = !isDark;
+  localStorage.setItem('darkMode', isDark ? 'on' : 'off');
+  document.body.classList.toggle('light');
+
+  [htmlEditor, cssEditor].forEach((e) => e.dispatch({
+    effects: themeConfig.reconfigure([isDark ? dracula : materialLight]),
+  }));
 });

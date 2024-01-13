@@ -23,6 +23,7 @@
     "@codemirror/state": "^6.4.0",
     "@codemirror/view": "^6.23.0",
     "@fontsource/jetbrains-mono": "^5.0.18",
-    "@uiw/codemirror-theme-dracula": "^4.21.21"
+    "@uiw/codemirror-theme-dracula": "^4.21.21",
+    "@uiw/codemirror-theme-material": "^4.21.21"
   }
 }
