@@ -17,7 +17,7 @@ import {
 } from '@codemirror/view';
 import { EditorState, Extension } from '@codemirror/state';
 import { dracula } from '@uiw/codemirror-theme-dracula';
-import { defaultKeymap, indentWithTab } from '@codemirror/commands';
+import { defaultKeymap, history, indentWithTab } from '@codemirror/commands';
 
 const htmlTemplate = `<!DOCTYPE html>
 <html>
@@ -42,6 +42,7 @@ const baseExtensions: Extension[] = [
   autocompletion(),
   closeBrackets(),
   EditorView.lineWrapping,
+  history(),
   keymap.of([
     ...closeBracketsKeymap,
     ...completionKeymap,
