@@ -1,0 +1,27 @@
+{
+  "name": "htbox",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "stylus": "^0.62.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.23.8",
+    "@codemirror/autocomplete": "^6.11.1",
+    "@codemirror/commands": "^6.3.3",
+    "@codemirror/lang-html": "^6.4.7",
+    "@codemirror/language": "^6.10.0",
+    "@codemirror/state": "^6.4.0",
+    "@codemirror/view": "^6.23.0",
+    "@fontsource/jetbrains-mono": "^5.0.18",
+    "@uiw/codemirror-theme-dracula": "^4.21.21"
+  }
+}
