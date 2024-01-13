@@ -66,6 +66,11 @@ new EditorView({
           let previewCode = document.querySelector('#preview code')!;
           previewCode.innerHTML = code;
 
+          let maybeTitle = document.querySelector('#preview title');
+          if (maybeTitle && maybeTitle.textContent) {
+            document.title = maybeTitle.textContent;
+          }
+
           localStorage.setItem('htmlCode', code);
         }
 
