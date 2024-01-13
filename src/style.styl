@@ -6,24 +6,40 @@ body
   background-color #282a36
   color #f8f8f2
   overflow hidden
-  display flex
 
-#code
+.cm-editor
 #preview 
-  height 100vh
   width 50vw
 
+.cm-editor
+  position absolute
+  height 50vh
+  outline none !important
+
+  .cm-tooltip
+    background-color #1e1f29 !important
+
 #preview 
+  position absolute
+  top 0
+  right -10px
   overflow-y scroll
   padding-top 3px
   word-wrap break-word
-
-#separator 
   height 100vh
-  width 2px
-  background-color #8be9fd
-  float left
-  margin 0 10px
 
-.cm-tooltip
-  background-color #1e1f29 !important
+.separator
+  background-color #8be9fd
+  position absolute
+
+  &:nth-of-type(2)
+    height 100vh
+    width 2px
+    top 0
+    left 50%
+
+  &:nth-of-type(4)
+    height 2px
+    width 50vw
+    top 50%
+    left 0

@@ -2,6 +2,7 @@ import '@fontsource/jetbrains-mono';
 import './style.styl';
 
 import { html } from '@codemirror/lang-html';
+import { css } from '@codemirror/lang-css';
 import {
   autocompletion,
   closeBrackets,
@@ -14,11 +15,11 @@ import {
   keymap,
   lineNumbers,
 } from '@codemirror/view';
-import { EditorState } from '@codemirror/state';
+import { EditorState, Extension } from '@codemirror/state';
 import { dracula } from '@uiw/codemirror-theme-dracula';
-import { defaultKeymap } from '@codemirror/commands';
+import { defaultKeymap, indentWithTab } from '@codemirror/commands';
 
-const template = `<!DOCTYPE html>
+const htmlTemplate = `<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -30,25 +31,71 @@ const template = `<!DOCTYPE html>
   </body>
 </html>`;
 
-const state = EditorState.create({
-  doc: localStorage.getItem('code') || template,
-  extensions: [
-    dracula,
-    lineNumbers(),
-    highlightActiveLine(),
-    html(),
-    autocompletion(),
-    closeBrackets(),
-    keymap.of([...closeBracketsKeymap, ...completionKeymap, ...defaultKeymap]),
-    EditorView.updateListener.of((update) => {
-      const code = update.state.doc.toString();
-      document.getElementById('preview')!.innerHTML = code;
-      localStorage.setItem('code', code);
-    }),
-  ],
-});
+const cssTemplate = `h1 {
+  color: #FF5555;
+}`;
+
+const baseExtensions: Extension[] = [
+  dracula,
+  lineNumbers(),
+  highlightActiveLine(),
+  autocompletion(),
+  closeBrackets(),
+  EditorView.lineWrapping,
+  keymap.of([
+    ...closeBracketsKeymap,
+    ...completionKeymap,
+    ...defaultKeymap,
+    indentWithTab,
+  ]),
+];
 
 new EditorView({
-  parent: document.getElementById('code')!,
-  state,
+  parent: document.getElementById('html-code')!,
+  state: EditorState.create({
+    doc: localStorage.getItem('htmlCode') || htmlTemplate,
+    extensions: [
+      ...baseExtensions,
+      html(),
+      EditorView.updateListener.of((update) => {
+        let isFirstUpdate = true;
+
+        if (isFirstUpdate || update.docChanged) {
+          const code = update.state.doc.toString();
+
+          let previewCode = document.querySelector('#preview code')!;
+          previewCode.innerHTML = code;
+
+          localStorage.setItem('htmlCode', code);
+        }
+
+        isFirstUpdate = false;
+      }),
+    ],
+  }),
 }).focus();
+
+new EditorView({
+  parent: document.getElementById('css-code')!,
+  state: EditorState.create({
+    doc: localStorage.getItem('cssCode') || cssTemplate,
+    extensions: [
+      ...baseExtensions,
+      css(),
+      EditorView.updateListener.of((update) => {
+        let isFirstUpdate = true;
+
+        if (isFirstUpdate || update.docChanged) {
+          const code = update.state.doc.toString();
+
+          let previewStyle = document.querySelector('#preview style')!;
+          previewStyle.innerHTML = code;
+
+          localStorage.setItem('cssCode', code);
+        }
+
+        isFirstUpdate = false;
+      }),
+    ],
+  }),
+});
