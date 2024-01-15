@@ -21,7 +21,7 @@ import { defaultKeymap, history, indentWithTab } from '@codemirror/commands';
 import { materialLight } from '@uiw/codemirror-theme-material';
 
 let isDark = false;
-if (!localStorage.getItem('darkMode')) { 
+if (!localStorage.getItem('darkMode')) {
   isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 } else {
   isDark = localStorage.getItem('darkMode') === 'on';
@@ -122,13 +122,32 @@ const cssEditor = new EditorView({
   }),
 });
 
+const save = document.getElementById('save')!;
+save.addEventListener('click', () => {
+  const a = document.createElement('a');
+
+  let blob = new Blob([htmlEditor.state.doc.toString()], { type: 'text/html' });
+  let url = URL.createObjectURL(blob);
+  a.setAttribute('href', url);
+  a.setAttribute('download', 'index.html');
+  a.click();
+
+  blob = new Blob([cssEditor.state.doc.toString()], { type: 'text/css' });
+  url = URL.createObjectURL(blob);
+  a.setAttribute('href', url);
+  a.setAttribute('download', 'style.css');
+  a.click();
+});
+
 const darkMode = document.getElementById('dark-mode')!;
 darkMode.addEventListener('click', () => {
   isDark = !isDark;
   localStorage.setItem('darkMode', isDark ? 'on' : 'off');
   document.body.classList.toggle('light');
 
-  [htmlEditor, cssEditor].forEach((e) => e.dispatch({
-    effects: themeConfig.reconfigure([isDark ? dracula : materialLight]),
-  }));
+  [htmlEditor, cssEditor].forEach((e) =>
+    e.dispatch({
+      effects: themeConfig.reconfigure([isDark ? dracula : materialLight]),
+    }),
+  );
 });
