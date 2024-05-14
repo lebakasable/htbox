@@ -126,7 +126,7 @@ const save = document.getElementById('save')!;
 save.addEventListener('click', () => {
   const a = document.createElement('a');
 
-  let blob = new Blob([htmlEditor.state.doc.toString() + '\n<link rel="stylesheet" href="style.css">'], { type: 'text/html' });
+  let blob = new Blob([htmlEditor.state.doc.toString() + '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n<link rel="stylesheet" href="style.css">'], { type: 'text/html' });
   let url = URL.createObjectURL(blob);
   a.setAttribute('href', url);
   a.setAttribute('download', 'index.html');
